@@ -1,0 +1,9 @@
+recursive-include app *.py *.html *.ico
+recursive-include .config *
+include .dockerignore
+include Dockerfile
+include manage.py
+include README.md
+include requirements.txt
+
+global-exclude *.pyc *.db

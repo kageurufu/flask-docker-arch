@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd /home/docker
+
+python manage.py create_db
+ENVIRONMENT=${ENVIRONMENT:-staging} supervisord -c /home/docker/.config/supervisord.conf

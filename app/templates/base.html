@@ -1,0 +1,97 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}Flask-Docker-Arch{% endblock %}
+{% block styles %}
+  {{ super() }}
+  <style>
+    .connect_status::after {
+      font-size: 1.3em;
+      color: red;
+      content: '...';
+    }
+
+    .connect_status.connected::after {
+      color: #1f3;
+      content: "✓";
+    }
+
+    td {
+      max-width: 400px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      text-overflow-ellipsis: ellipsis;
+      white-space: nowrap;
+    }
+
+    td .progress {
+      margin-bottom: 0;
+    }
+
+    tr.rejected {
+      text-decoration: line-through;
+      color: #bbb;
+    }
+
+  </style>
+{% endblock %}
+
+{% block navbar %}
+  <div class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="#" class="navbar-brand">Flask-Docker-Arch</a>
+      </div>
+      {% block navbar_left %}{% endblock %}
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a class="connect_status" href="#">
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}
+{% block content %}
+  <div class="container">
+    {% with messages = get_flashed_messages(True) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+              <div class="alert alert-{{ category }}" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+                {{ message }}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <div id="content">
+
+      {% block main %}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}
+{% block scripts %}
+  {{ super() }}
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+  <script>
+    window.socket = (function () {
+
+      var socket = io.connect();
+
+      socket.on('connect', function () {
+        $(".connect_status").addClass("connected");
+      });
+
+      socket.on('disconnect', function () {
+        $(".connect_status").removeClass("connected");
+      });
+      return socket;
+    })();
+  </script>
+{% endblock %}

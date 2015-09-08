@@ -1,0 +1,6 @@
+flask
+flask-socketio
+flask-script
+flask-sqlalchemy
+flask-bootstrap
+gunicorn==18.0
